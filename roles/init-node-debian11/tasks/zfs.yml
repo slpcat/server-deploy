@@ -1,0 +1,10 @@
+- name: use zfs from backports
+  copy:
+    src: "apt/preferences.d/90_zfs"
+    dest: "/etc/apt/preferences.d/90_zfs"
+
+- name: install zfs utils
+  package: name={{item}} state=present
+  with_items:
+    - zfs-dkms
+    - zfsutils-linux

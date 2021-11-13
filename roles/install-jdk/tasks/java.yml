@@ -1,0 +1,26 @@
+- name: copy jdk to remote host
+    copy: src=jdk-7u79-linux-x64.tar.gz dest=~
+- name: unzip jdk
+    shell: tar -zxf jdk-7u79-linux-x64.tar.gz
+- name: creat soft link
+    shell: ln -s ~/jdk1.7.0_79 jdk
+- name: set jdk_env copy use template
+    template: src=set_jdk.sh dest=~/set_jdk.sh
+- name: execute script to set jdkenv
+    shell: sh set_jdk.sh
+- name: source bash_profile
+    shell: source ~/.bash_profile
+- name: remove files
+    shell: rm jdk-7u79-linux-x64.tar.gz set_jdk.sh
+#添加jdk信息到环境变量
+- name: add java PATH to profile
+  lineinfile:
+    dest: /etc/profile
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - "export JAVA_HOME=/usr/local/jdk1.6.0_20"
+    - "export JRE_HOME=/usr/local/jdk1.6.0_20/jre"
+    - "export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH"
+    - "export PATH=$JAVA_HOME/bin:$PATH"
+

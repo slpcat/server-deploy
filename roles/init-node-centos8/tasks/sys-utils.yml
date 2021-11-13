@@ -1,0 +1,37 @@
+- name: install system utils
+  dnf: name={{item}} state=installed
+  with_items:
+    - gcc
+    - gcc-c++
+    - nc
+    - lrzsz
+    - bind-utils
+    - telnet
+    - lsof
+    - gzip
+    - htop
+    - iftop
+    - iotop
+    - nethogs
+    - iproute
+    - tmux
+    - net-tools
+    - ipvsadm
+    - git
+    - unzip
+    - perf
+    - psacct
+    - bcc-tools
+    - ltrace
+    - dropwatch
+    - trace-cmd
+    - iperf3
+    - conntrack-tools
+    - fuse-libs
+    - tcpdump
+  ignore_errors: yes
+
+- name: delete system utils
+  dnf: name={{item}} state=absent
+  with_items:
+    - irqbalance

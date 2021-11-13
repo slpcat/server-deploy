@@ -1,0 +1,32 @@
+- name: install system utils
+  package: name={{item}} state=present
+  with_items:
+    - apt-transport-https
+    - gcc
+    - lrzsz
+    - bind9utils
+    - telnet
+    - lsof
+    - gzip
+    - htop
+    - iftop
+    - iotop
+    - nethogs
+    - iproute2
+    - tmux
+    - net-tools
+    - ipvsadm
+    - git
+    - pacct
+    - unzip
+    - ltrace
+    - trace-cmd
+    - iperf3
+    - bpfcc-tools
+    - sysstat
+    - tcpdump
+
+- name: delete system utils
+  package: name={{item}} state=absent
+  with_items:
+    - irqbalance

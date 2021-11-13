@@ -1,0 +1,20 @@
+- name: copy ecs_mq files
+  copy:
+    src: "ecs_mq/"
+    dest: "/root/ecs_mq"
+    directory_mode: yes
+
+  notify:
+    - apply ecs_mq
+  ignore_errors: true
+
+#- name: copy multi-queue-hw
+#  copy:
+#    src: "ecs_mq/multi-queue-hw"
+#    dest: "/etc/init.d/multi-queue-hw"
+#    mode: 0755
+#  notify:
+#    - apply multi-queue-hw
+#  ignore_errors: true
+
+#tail /sys/class/net/eth*/queues/rx-*/{rps_cpus,rps_flow_cnt}

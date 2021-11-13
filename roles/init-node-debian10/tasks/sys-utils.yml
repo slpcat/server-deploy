@@ -1,0 +1,39 @@
+- name: install system utils
+  apt:
+    name: "{{item}}"
+    state: present
+    #default_release: buster-backports
+    update_cache: yes
+  with_items:
+    - apt-transport-https
+    - gcc
+    - lrzsz
+    - bind9utils
+    - telnet
+    - dmidecode
+    - lsof
+    - gzip
+    - htop
+    - iftop
+    - iotop
+    - nethogs
+    - iproute2
+    - tmux
+    - net-tools
+    - ipvsadm
+    - git
+    - pacct
+    - unzip
+    - psutils
+    - trace-cmd
+    - iperf3
+    - curl
+    - sysstat
+    - tcpdump
+  ignore_errors: yes
+
+- name: delete system utils
+  package: name={{item}} state=absent
+  with_items:
+    - irqbalance
+  ignore_errors: yes

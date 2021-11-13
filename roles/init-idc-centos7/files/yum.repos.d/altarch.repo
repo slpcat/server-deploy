@@ -1,0 +1,14 @@
+[altarch]
+name=CentOS-$releasever - altarch
+baseurl=http://mirror.centos.org/altarch/$releasever/kernel/$basearch/
+        http://mirrors.tuna.tsinghua.edu.cn/centos-altarch/$releasever/kernel/$basearch/
+gpgcheck=0
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[altarch-experimental]
+name=CentOS-$releasever - altarch
+baseurl=http://mirror.centos.org/altarch/$releasever/experimental/$basearch/
+        http://mirrors.tuna.tsinghua.edu.cn/centos-altarch/$releasever/experimental/$basearch/
+gpgcheck=0
+enabled=0

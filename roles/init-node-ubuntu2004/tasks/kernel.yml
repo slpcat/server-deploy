@@ -1,0 +1,36 @@
+- name: install mainline linux kernel
+  package: name={{item}} state=present
+  with_items:
+    - linux-image-virtual-hwe-20.04
+    - linux-headers-virtual-hwe-20.04
+    - linux-tools-virtual-hwe-20.04
+  when: kernel_version == "mainline"
+
+- name: install longterm linux kernel
+  package: name={{item}} state=latest
+  with_items:
+    - linux-image-virtual
+    - linux-headers-virtual
+  when: kernel_version == "longterm"
+
+- name: install aws linux kernel
+  package: name={{item}} state=latest
+  with_items:
+    - linux-image-aws
+    - linux-headers-aws
+    - linux-tools-aws
+  when: kernel_version == "aws"
+
+- name: create blacklist for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"
+
+- name: create load list for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modules-load.d/"
+  with_fileglob:
+    - "modules-load.d/*.conf"

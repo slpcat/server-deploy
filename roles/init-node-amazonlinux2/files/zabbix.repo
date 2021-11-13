@@ -1,0 +1,17 @@
+[zabbix]
+name=Zabbix Official Repository - $basearch
+baseurl=https://repo.zabbix.com/zabbix/5.4/rhel/7/$basearch/
+enabled=1
+gpgcheck=0
+
+[zabbix-debuginfo]
+name=Zabbix Official Repository debuginfo - $basearch
+baseurl=https://repo.zabbix.com/zabbix/5.4/rhel/7/$basearch/debuginfo/
+enabled=0
+gpgcheck=0
+
+[zabbix-non-supported]
+name=Zabbix Official Repository non-supported - $basearch
+baseurl=https://repo.zabbix.com/non-supported/rhel/7/$basearch/
+enabled=1
+gpgcheck=0

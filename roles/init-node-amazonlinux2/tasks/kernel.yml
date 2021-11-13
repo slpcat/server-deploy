@@ -1,0 +1,16 @@
+- name: install kernel-ng from amazonlinux
+  shell: "amazon-linux-extras install kernel-ng"
+
+- name: create blacklist for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"
+
+- name: create load list for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modules-load.d/"
+  with_fileglob:
+    - "modules-load.d/*.conf"

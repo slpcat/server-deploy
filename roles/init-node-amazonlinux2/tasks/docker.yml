@@ -1,0 +1,56 @@
+- name: Make docker-ce configure dir
+  file: path=/etc/docker state=directory
+
+- name: create docker config
+  copy:
+    src: "docker/daemon.json"
+    dest: "/etc/docker/daemon.json"
+
+- name: create docker config for buildkit
+  copy:
+    src: "docker/buildkitd.toml"
+    dest: "/etc/docker/buildkitd.toml"
+
+- name: Make operation script dir
+  file: path=/opt/custom/bin/ state=directory
+
+- name: create kube-proxy script for rancher
+  copy:
+    src: "bin/kube-proxy"
+    dest: "/opt/custom/bin/kube-proxy"
+
+- name: install docker from amazonlinux
+  shell: "amazon-linux-extras install docker"
+  ignore_errors: true
+
+#- name: enable lxcfs service
+#  systemd:
+#    name: lxcfs
+#    state: started
+#    enabled: true
+#  ignore_errors: true
+
+#- name: install iscsi-initiator-utils for openebs
+#  package: name={{item}} state=present
+#  with_items:
+#    - iscsi-initiator-utils
+
+#- name: enable iscsid service
+#  systemd:
+#    name: iscsid
+#    state: started
+#    enabled: true
+
+#- name: change systemd config
+#  shell: "sed -i s/LimitNOFILE=.*/LimitNOFILE=1000000/ /usr/lib/systemd/system/docker.service && systemctl daemon-reload"
+#  ignore_errors: yes
+
+- name: enable docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: true
+  ignore_errors: yes
+
+- name: multiach support
+  shell: "docker run --privileged --rm tonistiigi/binfmt --install all"

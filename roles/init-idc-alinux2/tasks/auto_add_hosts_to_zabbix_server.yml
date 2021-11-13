@@ -1,0 +1,74 @@
+# example.yml
+---
+- hosts: "{{ host }}"
+  vars:
+    zabbix_host_groups: "{{ host }}"
+
+    zabbix_url: "http://zabbix.example.com"
+    zabbix_api_user: Admin
+    zabbix_api_pass: admin
+    zabbix_api_create_hostgroup: True
+    zabbix_api_create_hosts: True
+    zabbix_create_hostgroup: present  # or absent
+    zabbix_create_host: present       # or absent
+    zabbix_host_status: enabled  
+    zabbix_agent_hostname: "{{ ansible_hostname }}"
+    zabbix_proxy: null
+    zabbix_inventory_mode: disabled
+    zabbix_useuip: 1
+    zabbix_agent_service: zabbix-agent
+    dns_name: null
+
+    zabbix_link_templates:
+      - Template OS Linux Active
+                                                                                                              
+    zabbix_agent_interfaces:
+      - type: 1
+        main: 1
+        useip: "{{ zabbix_useuip }}"
+        ip: 0.0.0.0
+        dns: ""
+        port: 0
+
+  tasks:
+  - name: "Make sure the zabbix-agent service is running"
+    service:
+      name: "{{ zabbix_agent_service }}"
+      state: started
+      enabled: yes
+    tags:
+      - service
+  
+  - name: "Create hostgroups"
+    local_action:
+      module: zabbix_group
+      server_url: "{{ zabbix_url }}"
+      login_user: "{{ zabbix_api_user }}"
+      login_password: "{{ zabbix_api_pass }}"
+      host_group: "{{ zabbix_host_groups }}"
+      state: "{{ zabbix_create_hostgroup }}"
+    when:
+      - zabbix_api_create_hostgroup
+    tags:
+      - api
+  
+  - name: "Create a new host or update an existing host's info"
+    local_action:
+      module: zabbix_host
+      server_url: "{{ zabbix_url }}"
+      login_user: "{{ zabbix_api_user }}"
+      login_password: "{{ zabbix_api_pass }}"
+      host_name: "{{ zabbix_agent_hostname }}"
+      host_groups: "{{ zabbix_host_groups }}"
+      link_templates: "{{ zabbix_link_templates }}"
+      status: "{{ zabbix_host_status }}"
+      state: "{{ zabbix_create_host }}"
+      proxy: "{{ zabbix_proxy }}"
+      inventory_mode: "{{ zabbix_inventory_mode }}"
+      interfaces: "{{ zabbix_agent_interfaces }}"
+      visible_name: "{{ zabbix_host_groups }}_{{ inventory_hostname }}"
+    when:
+      - zabbix_api_create_hosts
+    changed_when: false
+    tags:
+      - api

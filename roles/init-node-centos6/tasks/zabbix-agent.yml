@@ -1,0 +1,50 @@
+  - name:  CentOS6 system copy zabbix-agent rpm
+    copy: src=/tmp/zabbix-agent-3.4.9-1.el6.x86_64.rpm dest=/tmp/zabbix-agent-3.4.9-1.el6.x86_64.rpm
+    when:
+      - ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "6" 
+  - name:  CentOS7 system copy zabbix-agent rpm
+    copy: src=/tmp/zabbix-agent-3.4.9-1.el7.x86_64.rpm dest=/tmp/zabbix-agent-3.4.9-1.el7.x86_64.rpm
+    when:
+      - ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "7"
+  - name: yum install zabbix-agent
+    shell: cd /tmp;yum -y localinstall zabbix-agent-3.4.*.rpm
+  - name: rm zabbix-agent
+    shell: cd /tmp;rm -rf zabbix-agent-3.*.rpm
+  - name: configure Server IP
+    shell: sed -i 's/Server=127.0.0.1/Server=192.168.58.58/' /etc/zabbix/zabbix_agentd.conf  
+  - name: configure ServerActive IP
+    shell: sed -i 's/ServerActive=127.0.0.1/ServerActive=192.168.58.58/' /etc/zabbix/zabbix_agentd.conf
+  - name: configure HostMetadata
+    shell: sed -i 's/# HostMetadata=/HostMetadata=qas/' /etc/zabbix/zabbix_agentd.conf
+  - name: CentOS6 system configure Hostname
+    shell: host=`ifconfig |awk -F '[ :]+' 'NR==2 {print $4}'`;sed -i 's/Hostname=Zabbix server/Hostname='$host'/' /etc/zabbix/zabbix_agentd.conf
+    when:
+      - ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "6"
+  - name: CentOS7 system configure Hostname
+    shell: host=`ifconfig |awk -F '[ :]+' 'NR==2 {print $3}'`;sed -i 's/Hostname=Zabbix server/Hostname='$host'/' /etc/zabbix/zabbix_agentd.conf
+    when:
+      - ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "7"
+  - name: CentOS6 system start zabbix
+    shell: /etc/init.d/zabbix-agent start;chkconfig zabbix-agent on
+    when:
+      - ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "6"
+  - name: CentOS7 system start zabbix
+    shell: systemctl enable zabbix-agent.service;systemctl restart zabbix-agent.service
+    when:
+      - ansible_distribution == "CentOS"
+      - ansible_distribution_major_version == "7"
+
+
+    - name: copy file
+      copy: src={{ item.src }} dest={{ item.dest }} mode='0755'
+      with_items:
+      - {src: "/etc/ansible/scripts/zabbix_agent_install.sh",
+         dest: "/data/scripts/zabbix_agent_install.sh"}
+      - {src: '/etc/init.d/zabbix_agentd',
+         dest: '/etc/init.d/zabbix_agentd' }
+

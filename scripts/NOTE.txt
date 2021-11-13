@@ -1,0 +1,22 @@
+tke_custom_image.sh 腾讯清理cloud-init，用于制作CVM镜像
+
+方法一：CentOS关闭AliYunDun
+使用 chkconfig --list 查看开机启动里面这个软件的服务名是什么，然后替换掉 xxx 然后执行就可以了。如果想开机不启动的话，chkconfig --del xxxx 这个 xxxx 就是你找出来的 aliyundun 的后台服务。
+service aegis stop  #停止服务
+chkconfig --del aegis  # 删除服务
+
+方法二：卸载云盾监控屏蔽IP
+1、卸载阿里云盾监控
+
+wget http://update.aegis.aliyun.com/download/uninstall.sh
+sh uninstall.sh
+wget http://update.aegis.aliyun.com/download/quartz_uninstall.sh
+sh quartz_uninstall.sh
+
+2、删除残留
+pkill aliyun-service
+rm -fr /etc/init.d/agentwatch /usr/sbin/aliyun-service
+rm -rf /usr/local/aegis*
+
+卸载腾讯云镜
+uninstal_qcloud.sh

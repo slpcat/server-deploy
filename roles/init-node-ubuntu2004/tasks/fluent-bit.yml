@@ -1,0 +1,17 @@
+- name: install fluent-bit
+  package: name={{item}} state=present
+  with_items:
+    - td-agent-bit
+
+- name: enable fluent-bit service
+  systemd:
+    name: td-agent-bit
+    state: started
+    enabled: true
+  when: ansible_kernel is not search("Microsoft")
+
+- name: enable fluent-bit supervisord
+  copy:
+    src: "fluent-bit.conf"
+    dest: "/etc/supervisor.d/"
+  when: ansible_kernel is search("Microsoft")

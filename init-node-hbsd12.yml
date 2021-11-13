@@ -1,0 +1,16 @@
+---
+- name: Check ansible version
+  import_playbook: ansible_version.yml
+
+- name: Gather facts
+  import_playbook: facts.yml
+
+- hosts: "{{ deploy_env }}" # 部署至所有的主机
+  remote_user: "{{ user_name }}"
+  become: yes
+  serial: 50  # 同时部署50台机器
+  #  become_user: root
+  #  become_method: sudo
+  #  become_flags: '-s'
+  roles:
+    - { role: "init-node-hbsd12" } # 初始化新的环境

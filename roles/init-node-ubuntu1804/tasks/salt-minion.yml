@@ -1,0 +1,9 @@
+- name: install python3
+  package: name={{item}} state=present
+  with_items:
+    - salt-minion
+
+- name: create salt minion config
+  copy:
+    src: "salt-minion"
+    dest: "/etc/salt/minion"

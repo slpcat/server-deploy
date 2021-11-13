@@ -1,0 +1,9 @@
+#additional packages that extend functionality of existing packages
+[plus]
+name=CentOS-$releasever - Plus - mirrors.aliyun.com
+failovermethod=priority
+baseurl=https://mirrors.aliyun.com/centos/$releasever/centosplus/$basearch/os/
+        http://mirrors.aliyuncs.com/centos/$releasever/centosplus/$basearch/os/
+        http://mirrors.cloud.aliyuncs.com/centos/$releasever/centosplus/$basearch/os/
+gpgcheck=0
+enabled=0

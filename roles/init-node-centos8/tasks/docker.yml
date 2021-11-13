@@ -1,0 +1,61 @@
+- name: install docker-ce
+  dnf: name={{item}} state=installed
+  with_items:
+    - docker-ce-20.10.8-3.el8
+    - docker-ce-cli-20.10.8-3.el8
+  ignore_errors: yes
+
+- name: Make docker-ce configure dir
+  file: path=/etc/docker state=directory
+
+- name: create docker config
+  copy:
+    src: "docker/daemon.json"
+    dest: "/etc/docker/daemon.json"
+
+- name: Make operation script dir
+  file: path=/opt/custom/bin/ state=directory
+
+- name: create kube-proxy script for rancher
+  copy:
+    src: "bin/kube-proxy"
+    dest: "/opt/custom/bin/kube-proxy"
+
+- name: install lxcfs filesystem
+  dnf: name={{item}} state=installed
+  with_items:
+    - lxcfs
+
+- name: enable lxcfs service
+  systemd:
+    name: lxcfs
+    state: started
+    enabled: true
+
+- name: install iscsi-initiator-utils for openebs
+  dnf: name={{item}} state=present
+  with_items:
+    - iscsi-initiator-utils
+
+- name: enable iscsid service
+  systemd:
+    name: iscsid
+    state: started
+    enabled: true
+
+#- name: lock docker-ce version
+#  shell: "yum versionlock docker-ce docker-ce-cli"
+
+- name: change systemd config
+  shell: "sed -i s/LimitNOFILE=.*/LimitNOFILE=1000000/ /usr/lib/systemd/system/docker.service && systemctl daemon-reload"
+  ignore_errors: yes
+
+- name: enable docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: true
+  ignore_errors: yes
+
+- name: multiach support
+  shell: "docker run --privileged --rm tonistiigi/binfmt --install all"

@@ -1,0 +1,42 @@
+- name: install system utils
+  package: name={{item}} state=installed
+  with_items:
+    - gcc
+    - gcc-c++
+    - nc
+    - lrzsz
+    - bind-utils
+    - telnet
+    - lsof
+    - gzip
+    - htop
+    - iftop
+    - iotop
+    - nethogs
+    - iproute
+    - tmux
+    - net-tools
+    - ipvsadm
+    - git
+    - unzip
+    - perf
+    - ltrace
+    - psacct
+    #- bpftrace
+    #- bpftrace-tools
+    #- bcc-static
+    - bcc-tools
+    #- sysdig
+    #- dropwatch
+    - trace-cmd
+    - iperf3
+    - conntrack-tools
+    - fuse-libs
+    - tcpdump
+    - yum-plugin-versionlock
+  ignore_errors: yes
+
+- name: delete system utils
+  package: name={{item}} state=absent
+  with_items:
+    - irqbalance

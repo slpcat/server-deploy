@@ -1,0 +1,7 @@
+- name: Renew centos repos
+  copy:
+    src: "{{ item }}"
+    dest: "{{ centos_repo_dir }}"
+  with_fileglob:
+    - "yum.repos.d/*.repo"
+

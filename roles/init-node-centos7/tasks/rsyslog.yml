@@ -1,0 +1,23 @@
+- name: install rsync
+  package: name={{item}} state=installed
+  with_items:
+    - rsync
+
+- name: create pip config
+  copy:
+    src: "rsync.secrets"
+    dest: "/etc/rsync.secrets"
+
+
+rsyslog rsyslog-kafka.x86_64
+
+- name: enable nscd service
+  systemd:
+    name: rsyslog
+    state: started
+    enabled: true
+
+1.install 
+2. config
+
+3. systemd start

@@ -1,0 +1,10 @@
+[Unit] 
+Description= ECS enable networking multiqueue
+After=network.target 
+ 
+[Service] 
+Type=forking 
+ExecStart=/sbin/ecs_mq_rps_rfs
+ 
+[Install] 
+WantedBy=multi-user.target

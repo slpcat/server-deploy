@@ -1,0 +1,14 @@
+- name: install supervisor
+  yum: name={{item}} state=installed
+  with_items:
+    - supervisor
+
+- name: create supervisor config
+  copy:
+    src: "supervisord.conf"
+    dest: "/etc/supervisord.conf"
+
+- name: Make sure supervisord is running
+  service:
+    state: "started"
+    name: "supervisord"

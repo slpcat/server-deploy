@@ -1,0 +1,106 @@
+#修改主机名
+#修改dns
+#修改ssh
+#禁止无效用户
+#CMDB agent
+#修改hostname,bash提示符
+#禁止selinux
+#禁止firewalld
+##校正时间
+#修改/etc/security/limits.conf，完成系统性能优化的一些设置
+##安装必备软件
+#
+#设置vimrc
+#bash
+#Logrotate
+#
+#初始化脚本目录文件
+#安装docker环境
+#安装python3
+#安装supervisord
+#安装confd
+#rsync
+#安装node-exporter
+#安装zabbix-agent
+#安装salt-minion
+#安装filebeat
+#安装定时任务cron
+#进程存活检查脚本
+#系统备份脚本
+#
+
+- name: disable selinux
+  include_tasks: selinux.yml
+  when: ansible_kernel is not search("Microsoft")
+
+#- name: disable firewalld
+#  include_tasks: firewalld.yml
+
+- name: disable auditd
+  include_tasks: auditd.yml
+
+- name: disable atd
+  include_tasks: atd.yml
+
+- name: disable rpcbind
+  include_tasks: rpcbind.yml
+
+#- name: config dns
+#  include_tasks: sysctl.yml
+
+- name: create yum repo
+  include_tasks: yum-repo.yml
+
+- name: create block device rules
+  include_tasks: block-device.yml
+
+- name: create ecs mq config
+  include_tasks: ecs_mq.yml
+
+#- name: create systemd config
+#  include_tasks: systemd.yml
+#  when: ansible_kernel is not search("Microsoft")
+
+- name: create system limits
+  include_tasks: limits.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: create sysctl
+  include_tasks: sysctl.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: install kernel
+  include_tasks: kernel.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: create grub menu
+  include_tasks: grub.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: install system utils
+  include_tasks: sys-utils.yml
+
+- name: install nscd 
+  include_tasks: nscd.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: install python
+  include_tasks: python.yml
+
+- name: change fstab options
+  include_tasks: fstab.yml
+
+- name: install supervisor
+  include_tasks: supervisor.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: install sshd and ssh
+  include_tasks: ssh.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: install rsync
+  include_tasks: rsync.yml
+
+#- name: install fluent-bit
+#  include_tasks: fluent-bit.yml
+

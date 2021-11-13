@@ -1,0 +1,22 @@
+- name: install mainline linux kernel
+  package: name={{item}} state=present
+  with_items:
+    #- linux-image-5.9.0-0.bpo.2-rt-amd64
+    - linux-image-5.9.0-0.bpo.2-cloud-amd64
+    #- linux-headers-5.9.0-0.bpo.2-rt-amd64
+    - linux-headers-5.9.0-0.bpo.2-cloud-amd64
+  when: kernel_version == "mainline"
+
+- name: install longterm linux kernel
+  package: name={{item}} state=latest
+  with_items:
+    - linux-image
+    - linux-headers
+  when: kernel_version == "longterm"
+
+- name: create blacklist for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"

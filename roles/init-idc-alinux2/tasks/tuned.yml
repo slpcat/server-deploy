@@ -1,0 +1,3 @@
+- name: disable tuned
+  service: name=tuned enabled=no state=stopped
+  ignore_errors: yes

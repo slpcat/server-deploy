@@ -1,0 +1,23 @@
+- name: Renew centos repos
+  copy:
+    src: "{{ item }}"
+    dest: "{{ centos_repo_dir }}"
+  with_fileglob:
+    - "yum.repos.d/*.repo"
+
+- name: Make operation script dir
+  file: path="/etc/yum.repos.d/{{item}}" state=absent
+  with_items:
+    - elrepo.repo
+  when:
+    - ansible_architecture == "aarch64"
+
+#- name: clean old yum repo files
+#  file: path="/etc/yum.repos.d/{{item}}" state=absent
+#  with_items:
+#    - salt_internal.repo
+
+#- name: create yum.conf
+#  copy:
+#    src: "yum.conf"
+#    dest: "/etc/yum.conf"

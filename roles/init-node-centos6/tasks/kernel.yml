@@ -1,0 +1,18 @@
+#- name: delete old tools
+#  yum: name={{item}} state=absent
+#  with_items:
+#    - kernel-tools
+#    - kernel-tools-libs
+
+- name: install linux kernel
+  yum: name={{item}} state=latest
+  with_items:
+    - kernel-lt
+    - kernel-lt-devel
+
+- name: create blacklist for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"

@@ -1,0 +1,86 @@
+- mountopts:
+    name: "{{ item.mount }}"
+    option: discard
+    state: present
+  with_items: "{{ ansible_mounts }}"
+  when: ( item.fstype == "ext4" or item.fstype == "xfs" )
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: rw
+    state: present
+  with_items: "{{ ansible_mounts }}"
+  when: ( item.fstype == "ext4" or item.fstype == "xfs" )
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: noatime
+    state: present
+  with_items: "{{ ansible_mounts }}"
+  when: ( item.fstype == "ext4" or item.fstype == "xfs" )
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: nobarrier
+    state: present
+  with_items: "{{ ansible_mounts }}"
+  when: item.fstype == "ext4"
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: data
+    value: ordered
+  with_items: "{{ ansible_mounts }}"
+  when: item.fstype == "ext4"
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: inode_readahead_blks
+    value: 2048
+  with_items: "{{ ansible_mounts }}"
+  when: item.fstype == "ext4"
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: commit
+    value: 600
+  with_items: "{{ ansible_mounts }}"
+  when: item.fstype == "ext4"
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: errors
+    value: remount-ro
+  with_items: "{{ ansible_mounts }}"
+  when: ( item.fstype == "ext4" and item.mount == "/" )
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: delalloc
+    state: present
+  with_items: "{{ ansible_mounts }}"
+  when: item.fstype == "ext4"
+
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: x-systemd.growfs
+    state: present
+  with_items: "{{ ansible_mounts }}"
+  when: 
+    - item.fstype == "ext4" or item.fstype == "xfs"
+    - item.mount == "/"
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: allocsize
+    value: 256m
+  with_items: "{{ ansible_mounts }}"
+  when: item.fstype == "xfs"
+
+- mountopts:
+    name: "{{ item.mount }}"
+    option: logbsize
+    value: 256k
+  with_items: "{{ ansible_mounts }}"
+  when: item.fstype == "xfs"

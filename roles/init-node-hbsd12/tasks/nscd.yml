@@ -1,0 +1,11 @@
+#name/dns cache for system
+- name: install nscd
+  package: name={{item}} state=present
+  with_items:
+    - nscd
+
+- name: enable nscd service
+  systemd:
+    name: nscd
+    state: started
+    enabled: true

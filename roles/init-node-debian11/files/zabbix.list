@@ -1,0 +1,2 @@
+deb http://repo.zabbix.com/zabbix/5.4/debian bullseye main
+deb-src http://repo.zabbix.com/zabbix/5.4/debian bullseye main

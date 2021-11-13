@@ -1,0 +1,3 @@
+- name: disable acpid
+  service: name=acpid enabled=no state=stopped
+  ignore_errors: yes

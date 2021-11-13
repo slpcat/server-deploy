@@ -1,0 +1,55 @@
+- name: delete old tools
+  package: name={{item}} state=absent
+  with_items:
+    - kernel-tools
+    - kernel-tools-libs
+  when: kernel_version == "mainline" or kernel_version == "longterm"
+
+- name: install mainline linux kerne
+  package: name={{item}} state=latest
+  with_items:
+    - kernel-ml
+    - kernel-ml-devel
+    - kernel-ml-headers
+    - kernel-ml-tools
+  when: kernel_version == "mainline"
+
+- name: install longterm linux kernel
+  package: name={{item}} state=latest
+  with_items:
+    - kernel-lt
+    - kernel-lt-devel
+    - kernel-lt-tools
+  when: kernel_version == "longterm"
+
+- name: install altarch linux kernel
+  package: name={{item}} state=latest enablerepo=altarch
+  with_items:
+    - kernel
+    - kernel-devel
+    - kernel-tools
+    - kernel-headers
+  when: kernel_version == "altarch"
+
+- name: install altarch linux kernel
+  package: name={{item}} state=latest enablerepo=altarch-experimental
+  with_items:
+    - kernel
+    - kernel-devel
+    - kernel-tools
+    - kernel-headers
+  when: kernel_version == "altarch-experimental"
+
+- name: create blacklist for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"
+
+- name: create load list for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modules-load.d/"
+  with_fileglob:
+    - "modules-load.d/*.conf"

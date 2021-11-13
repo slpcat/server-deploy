@@ -1,0 +1,68 @@
+- name: install mainline linux kernel
+  apt:
+    name: "{{item}}"
+    state: present
+    default_release: bullseye-backports
+    update_cache: yes
+  with_items:
+    - linux-image-amd64
+    - linux-headers-amd64
+    - linux-perf
+  when:
+    - kernel_version == "mainline"
+    - ansible_architecture == "x86_64"
+
+- name: install longterm linux kernel
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+    - linux-image-amd64
+    - linux-headers-amd64
+  when:
+    - kernel_version == "longterm"
+    - ansible_architecture == "x86_64"
+
+
+- name: install cloud linux kernel
+  apt:
+    name: "{{item}}"
+    state: present
+    #default_release: bullseye-backports
+    update_cache: yes
+  with_items:
+    - linux-image-cloud-arm64
+    - linux-headers-cloud-arm64
+    - linux-perf
+  when:
+    - kernel_version == "cloud"
+    - ansible_architecture == "aarch64"
+
+- name: install cloud linux kernel
+  apt:
+    name: "{{item}}"
+    state: present
+    #default_release: bullseye-backports
+    update_cache: yes
+  with_items:
+    - linux-image-cloud-amd64
+    - linux-headers-cloud-amd64
+    - linux-perf
+  when:
+    - kernel_version == "cloud"
+    - ansible_architecture == "x86_64"
+
+- name: create blacklist for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"
+
+- name: create load list for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modules-load.d/"
+  with_fileglob:
+    - "modules-load.d/*.conf"

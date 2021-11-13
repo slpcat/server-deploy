@@ -1,0 +1,27 @@
+{   "registry-mirrors": ["https://802s2hfq.mirror.aliyuncs.com"],
+    "live-restore": false,
+    "data-root": "/tol/docker",
+    "log-driver": "local",
+    "storage-driver": "overlay2",
+    "raw-logs": true,
+    "log-opts":{
+       "mode": "non-blocking",
+       "max-buffer-size": "8m",
+       "max-size" : "128m",
+       "max-file" : "4"
+    },
+    "default-shm-size": "128M",
+    "default-ulimits": {
+       "nofile": {
+          "Name": "nofile",
+          "Hard": 900000,
+          "Soft": 800000
+       }
+    },
+    "max-concurrent-downloads": 200,
+    "max-concurrent-uploads": 10,
+    "oom-score-adjust": -1000,
+    "features": { "buildkit": true },
+    "experimental" : true,
+    "debug": false
+}

@@ -1,0 +1,14 @@
+- name: install python 2/3
+  yum: name={{item}} state=installed
+  with_items:
+    - python3
+    - python3-pip
+    - python2-pip
+
+- name: create pip config
+  copy:
+    src: "pip.conf"
+    dest: "/etc/pip.conf"
+
+- name: install dependencies for mountopts-module
+  pip: name=fstab

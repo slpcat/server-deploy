@@ -1,0 +1,3 @@
+- name: install java
+  include_tasks: java.yml
+  when: ansible_kernel is not search("Microsoft")

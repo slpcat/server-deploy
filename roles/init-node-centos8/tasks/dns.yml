@@ -1,0 +1,13 @@
+#DNS
+##if [ $idc == "m7" ];then
+##    echo -e "nameserver 172.18.46.200" > /etc/resolv.conf
+##elif [ $idc == "qcloud" ];then
+##    echo -e "nameserver 172.18.200.200" > /etc/resolv.conf
+##elif $(echo $idc |grep 'dh' &>/dev/null);then
+##    echo -e "nameserver 10.155.5.4" > /etc/resolv.conf
+##elif test "$fms";then
+##    echo -e "nameserver 114.114.114.114\nnameserver 8.8.8.8" > /etc/resolv.conf
+##else
+##    echo -e "nameserver 172.18.64.200" > /etc/resolv.conf
+##fi
+##echo "DNS change done !"

@@ -1,0 +1,47 @@
+- name: copy apt source list
+  copy:
+    src: "zabbix.repo"
+    dest: "/etc/yum.repos.d/zabbix.repo"
+  when:
+    - ansible_architecture == "x86_64"
+
+- name: install zabbix agent
+  package: name={{item}} state=present
+  with_items:
+    - zabbix40-agent
+  when:
+    - ansible_architecture == "aarch64"
+
+- name: install zabbix agent
+  package: name={{item}} state=present
+  with_items:
+    - zabbix-agent
+  when:
+    - ansible_architecture == "x86_64"
+
+- name: create zabbix agent config
+  template:
+    src: "zabbix_agentd.conf.j2"
+    dest: "/etc/zabbix/zabbix_agentd.conf"
+
+- name: Make zabbix agentd.d dir
+  file: path=/etc/zabbix/zabbix_agentd.conf.d state=directory
+
+- name: link zabbix_agentd.d dir
+  file:
+    src: "/etc/zabbix/zabbix_agentd.conf.d/"
+    path: "/etc/zabbix/zabbix_agentd.d"
+    state: link
+    force: yes
+
+- name: create zabbix agent service
+  copy:
+    src: "zabbix-agent.service"
+    dest: "/usr/lib/systemd/system/zabbix-agent.service"
+
+- name: Make sure zabbix agent is running
+  systemd:
+    daemon_reload: yes
+    state: "started"
+    name: "zabbix-agent"
+    enabled: yes

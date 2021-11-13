@@ -1,0 +1,7 @@
+- name: disable aliyun service
+  service: name=aliyun enabled=no state=stopped
+  ignore_errors: yes
+
+- name: disable AssistDaemon service
+  service: name=AssistDaemon enabled=no state=stopped
+  ignore_errors: yes

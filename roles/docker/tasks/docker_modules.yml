@@ -1,0 +1,13 @@
+- name: Docker | Deploy kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "modules-load.d/"
+  with_fileglob:
+    - "modules-load.d/*.conf"
+
+- name: Docker | Deploy kernel module parameters
+  copy:
+    src: "{{ item }}"
+    dest: "modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"

@@ -1,0 +1,9 @@
+- name: install python3
+  yum: name={{item}} state=installed
+  with_items:
+    - salt-minion
+
+- name: create salt minion config
+  copy:
+    src: "salt-minion"
+    dest: "/etc/salt/minion"

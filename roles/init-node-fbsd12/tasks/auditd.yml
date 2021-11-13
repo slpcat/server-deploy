@@ -1,0 +1,3 @@
+- name: disable auditd
+  service: name=auditd enabled=no state=stopped
+  ignore_errors: yes

@@ -1,0 +1,17 @@
+- name: create sysctl config
+  copy:
+    src: "etc/sysctl.conf"
+    dest: "/etc/sysctl.conf"
+  notify:
+    - apply sysctl
+  ignore_errors: true
+
+- name: create sysctl config for xfs
+  copy:
+    src: "etc/sysctl.d/11-xfs.conf"
+    dest: "/etc/sysctl.d/11-xfs.conf"
+  notify:
+    - apply sysctl
+  ignore_errors: true
+  with_items: "{{ ansible_mounts }}"
+  when: ( item.fstype == "xfs" and item.mount == "/" )

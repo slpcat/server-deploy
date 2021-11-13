@@ -1,0 +1,8 @@
+[PowerTools]
+name=CentOS-$releasever - PowerTools - mirrors.aliyun.com
+failovermethod=priority
+baseurl=https://mirrors.aliyun.com/centos/$releasever/PowerTools/$basearch/os/
+        http://mirrors.aliyuncs.com/centos/$releasever/PowerTools/$basearch/os/
+        http://mirrors.cloud.aliyuncs.com/centos/$releasever/PowerTools/$basearch/os/
+gpgcheck=0
+enabled=0

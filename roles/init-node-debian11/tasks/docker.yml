@@ -1,0 +1,70 @@
+- name: hold docker version
+  copy:
+    src: "apt/preferences.d/docker-ce"
+    dest: "/etc/apt/preferences.d/docker-ce"
+
+- name: install gpg key for apt
+  copy:
+    src: "apt/trusted.gpg.d/docker-archive-keyring.gpg"
+    dest: "/etc/apt/trusted.gpg.d/docker-archive-keyring.gpg"
+
+- name: config apt repo for docker
+  copy:
+    src: "apt/sources.list.d/docker.list"
+    dest: "/etc/apt/sources.list.d/docker.list"
+
+- name: Make docker config dir
+  file: path=/etc/docker/ state=directory
+
+- name: create docker config
+  copy:
+    src: "docker/daemon.json"
+    dest: "/etc/docker/daemon.json"
+
+- name: create docker config for buildkit
+  copy:
+    src: "docker/buildkitd.toml"
+    dest: "/etc/docker/buildkitd.toml"
+
+- name: Make operation script dir
+  file: path=/opt/custom/bin/ state=directory
+
+- name: create kube-proxy script for rancher
+  copy:
+    src: "bin/kube-proxy"
+    dest: "/opt/custom/bin/kube-proxy"
+
+- name: install lxcfs filesystem
+  package: name={{item}} state=present
+  with_items:
+    - lxcfs
+
+- name: install open-iscsi for openebs
+  package: name={{item}} state=present
+  with_items:
+    - open-iscsi
+
+- name: enable open-iscsi service
+  systemd:
+    name: open-iscsi
+    state: started
+    enabled: true
+
+#- name: install qemu for multiarch
+#  package: name={{item}} state=present
+#  with_items:
+#    - qemu-user
+#    - qemu-user-static
+#    - binfmt-support
+
+- name: install docker-ce
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+    - docker-ce
+  ignore_errors: yes
+
+- name: multiach support
+  shell: "docker run --privileged --rm tonistiigi/binfmt --install all"

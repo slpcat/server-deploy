@@ -1,0 +1,2 @@
+#deb https://download.docker.com/linux/debian  bullseye stable
+deb http://mirrors.aliyun.com/docker-ce/linux/debian bullseye stable

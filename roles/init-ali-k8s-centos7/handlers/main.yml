@@ -1,0 +1,3 @@
+- name: apply kubelet
+  shell: "systemctl daemon-reload && systemctl restart kubelet"
+  ignore_errors: true

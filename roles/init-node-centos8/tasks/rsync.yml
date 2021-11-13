@@ -1,0 +1,9 @@
+- name: install rsync
+  dnf: name={{item}} state=installed
+  with_items:
+    - rsync
+
+- name: create pip config
+  copy:
+    src: "rsync.secrets"
+    dest: "/etc/rsync.secrets"

@@ -1,0 +1,7 @@
+Package: docker-ce
+Pin: version 5:20.10.7~3-0~debian-buster
+Pin-Priority: 1000
+
+Package: docker-ce-cli
+Pin: version 5:20.10.7~3-0~debian-buster
+Pin-Priority: 1000

@@ -1,0 +1,37 @@
+#- name: copy apt source list
+#  copy:
+#    src: "zabbix.list"
+#    dest: "/etc/apt/sources.list.d/"
+
+- name: copy gpg for zabbix
+  copy:
+    src: "zabbix-official-repo.gpg"
+    dest: "/etc/apt/trusted.gpg.d/"
+
+- name: install zabbix agent
+  package: name={{item}} state=present
+  with_items:
+    - zabbix-agent
+
+- name: create zabbix agent config
+  template:
+    src: "zabbix_agentd.conf.j2"
+    dest: "/etc/zabbix/zabbix_agentd.conf"
+
+#- name: link zabbix_agentd.d dir
+#  file:
+#    src: "/etc/zabbix/zabbix_agentd.conf.d/"
+#    path: "/etc/zabbix/zabbix_agentd.d"
+#    state: link
+
+- name: create zabbix agent service
+  copy:
+    src: "zabbix-agent.service"
+    dest: "/usr/lib/systemd/system/zabbix-agent.service"
+
+- name: Make sure zabbix agent is running
+  systemd:
+    daemon_reload: yes
+    state: "started"
+    name: "zabbix-agent"
+    enabled: yes

@@ -1,0 +1,8 @@
+     - "sudo systemctl disable apt-daily.service"
+      - "sudo systemctl disable apt-daily.timer"
+      - "sudo systemctl stop apt-daily.service"
+      - "sudo systemctl disable apt-daily-upgrade.service"
+      - "sudo systemctl disable apt-daily-upgrade.timer"
+      - "sudo systemctl stop apt-daily-upgrade.service"
+      - "sudo DEBIAN_FRONTEND=noninteractive apt-get update -yq"
+      - "sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq"

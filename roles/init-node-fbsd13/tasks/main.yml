@@ -1,0 +1,107 @@
+#修改主机名
+#修改dns
+#修改ssh
+#禁止无效用户
+#修改hostname,bash提示符
+##校正时间
+#修改/etc/security/limits.conf，完成系统性能优化的一些设置
+##安装必备软件
+#
+#设置vimrc
+#bash
+#Logrotate
+#
+#初始化脚本目录文件
+#安装docker环境
+#安装python3
+#rsync
+#安装node-exporter
+#安装zabbix-agent
+#系统备份脚本
+#
+
+#- name: config dns
+#  include_tasks: sysctl.yml
+
+#- name: create package repo
+#  include_tasks: package-repo.yml
+
+
+#- name: create ecs mq config
+#  include_tasks: ecs_mq.yml
+
+
+#- name: create system limits
+#  include_tasks: limits.yml
+#  when: ansible_kernel is not search("Microsoft")
+
+- name boot loader
+
+
+- name: create sysctl
+  include_tasks: sysctl.yml
+  when: ansible_kernel is not search("Microsoft")
+
+
+- name: install system utils
+  include_tasks: sys-utils.yml
+
+
+- name: time sync
+
+- name: login.conf
+
+- name: repo config
+
+- name: shell profile
+
+- name: sendmail disabled
+
+- name: accounting_enable
+
+- name: chronyd_enable=
+
+- user
+
+- sshd
+
+- cloud-init
+
+
+
+
+- name dns cache local_unbound
+
+- syslogd syslogd_
+
+- clear_tmp_enab
+
+
+- keyboard keyrate="250.34"
+
+- locale and lang
+
+
+
+- name: install nscd 
+  include_tasks: nscd.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: install python
+  include_tasks: python.yml
+
+- name: install sshd and ssh
+  include_tasks: ssh.yml
+  when: ansible_kernel is not search("Microsoft")
+
+- name: install rsync
+  include_tasks: rsync.yml
+
+#- name: install fluent-bit
+#  include_tasks: fluent-bit.yml
+
+- name: install zabbix agent
+  include_tasks: zabbix-agent.yml
+
+#- name: install containerd
+#  include_tasks: docker.yml

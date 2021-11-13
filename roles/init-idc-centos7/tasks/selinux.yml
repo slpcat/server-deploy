@@ -1,0 +1,5 @@
+- name: seline modify enforcing
+  lineinfile:
+    dest: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: 'SELINUX=disabled'

@@ -1,0 +1,2 @@
+- name: install dnf for centos7
+  shell: "yum install -y dnf"

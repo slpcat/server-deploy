@@ -1,0 +1,32 @@
+- name: Make docker config dir
+  file: path=/etc/docker/ state=directory
+
+- name: create docker config
+  copy:
+    src: "docker/daemon.json"
+    dest: "/etc/docker/daemon.json"
+
+- name: Make operation script dir
+  file: path=/opt/custom/bin/ state=directory
+
+- name: create kube-proxy script for rancher
+  copy:
+    src: "bin/kube-proxy"
+    dest: "/opt/custom/bin/kube-proxy"
+
+#- name: install lxcfs filesystem
+#  package: name={{item}} state=present
+#  with_items:
+#    - lxcfs
+
+- name: install docker-ce
+  package: name={{item}} state=present
+  with_items:
+    - docker-ce-19.03.15-3.el7
+    - docker-ce-cli-19.03.15-3.el7
+
+- name: hold docker version
+  shell: "yum versionlock add docker-ce docker-ce-cli"
+
+- name: set auto start fori docker 
+  shell: "systemctl enable docker"

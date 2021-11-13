@@ -1,0 +1,7 @@
+- name: enable zfs repo
+  shell: "yum-config-manager --enable zfs"
+
+- name: install zfs utils
+  package: name={{item}} state=present
+  with_items:
+    - zfs

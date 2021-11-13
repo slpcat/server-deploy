@@ -1,0 +1,15 @@
+- name: install supervisor
+  dnf: name={{item}} state=installed
+  with_items:
+    - supervisor
+
+- name: create supervisor config
+  copy:
+    src: "supervisord.conf"
+    dest: "/etc/supervisord.conf"
+
+- name: Make sure supervisord is running
+  systemd:
+    state: "started"
+    name: "supervisord"
+    enabled: true

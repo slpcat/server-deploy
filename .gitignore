@@ -1,0 +1,24 @@
+*.bin
+*/www_root/
+*.rpm
+*.deb
+*.apk
+*.iso
+*.img
+*.qcow2
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar
+*.gz
+*.xz
+*.bz2
+*.rar
+
+*.log
+*.temp
+
+.DS_Store

@@ -1,0 +1,10 @@
+- name: install fluent-bit
+  yum: name={{item}} state=installed
+  with_items:
+    - td-agent-bit
+
+- name: enable fluent-bit service
+  service:
+    name: td-agent-bit
+    state: started
+    enabled: true

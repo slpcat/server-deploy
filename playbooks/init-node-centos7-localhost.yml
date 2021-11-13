@@ -1,0 +1,61 @@
+---
+- name: Check ansible version
+  import_playbook: ansible_version.yml
+
+#- name: Gather facts
+#  import_playbook: facts.yml
+
+- hosts: localhost 
+  remote_user: "{{ user_name }}"
+  become: yes
+  serial: 50  # 同时部署50台机器
+  #  become_user: root
+  #  become_method: sudo
+  #  become_flags: '-s'
+  vars:
+    mitogen_version: 0.2.9
+    mitogen_url: https://github.com/dw/mitogen/archive/v{{ mitogen_version }}.tar.gz
+    ansible_connection: local
+    user_name: "root"
+    yum_repo_proxy: "http://172.18.206.87:3142"
+
+    zabbix_server: "172.18.206.123"
+    zabbix_agent_port: "20050"
+    zabbix_url: "http://zabbix.com/"
+
+    #文件仓库
+    artifactory_url: "http://172.18.206.191"
+
+    #docker仓库
+    docker_registry: "http://127.0.0.1"
+
+    #update kernel
+    elrepo_kernel: true
+
+    #kernel version mainline or longterm
+    kernel_version: "longterm"
+
+    # Deploy container engine
+    # Set false if you want to deploy container engine manually.
+    deploy_container_engine: false
+    container_manager: docker
+
+    salt_master: "172.18.32.30"
+    ntp_server: "time.exmaple.com"
+
+    #dns服务器 阿里云172.18.208.200，腾讯云172.18.200.200
+    dns_server: "172.18.208.200"
+
+    centos_repo_dir: "/etc/yum.repos.d"
+
+    #服务端日志采集kafka地址
+
+    serverlog_kafka_fluent_bit: "172.18.206.231:9092,172.18.206.230:9092,172.18.206.232:9092"
+    serverlog_fluent_bit_topic: "serverlog"
+
+  roles:
+    - { role: "init-node-centos7" } # 初始化新的环境
+    #- { role: "docker", when: deploy_container_engine == true |default(false) }
+    #- { role: "install-fluent-bit" } #安装fluent-bit
+    - { role: "install-zabbix" } #安装zabbix-agent
+    #- { role: "install-supervisord" } #安装supervisord

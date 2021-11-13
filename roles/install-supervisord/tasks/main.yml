@@ -1,0 +1,3 @@
+- name: install supervisor
+  include_tasks: supervisor.yml
+  when: ansible_kernel is not search("Microsoft")

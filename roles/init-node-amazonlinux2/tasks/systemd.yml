@@ -1,0 +1,4 @@
+- name: create systemd config
+  copy:
+    src: "system.conf"
+    dest: "/etc/systemd/system.conf"

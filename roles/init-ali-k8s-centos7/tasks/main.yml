@@ -1,0 +1,4 @@
+#kubelet 支持sysctl
+
+- name: config kubelet service
+  include_tasks: kubelet.yml

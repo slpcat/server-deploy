@@ -1,0 +1,14 @@
+- name: create hosts allow
+  copy:
+    src: "hosts.allow"
+    dest: "/etc/hosts.allow"
+
+#- name: create hosts deny
+#  copy:
+#    src: "hosts.deny"
+#    dest: "/etc/hosts.deny"
+
+#- name: create sshd server config
+#  copy:
+#    src: "sshd_config"
+#    dest: "/etc/sshd_config"

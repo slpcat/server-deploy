@@ -1,0 +1,30 @@
+- name: Init centos7
+  shell: "{{ script_base_dir }}/init-centos7.sh"
+
+- name: Install python3
+  shell: "{{ script_base_dir }}/install-python3.sh"
+
+- name: Install docker
+  shell: "{{ script_base_dir }}/install-docker.sh"
+
+- name: Install supervisor
+  shell: "{{ script_base_dir }}/install-supervisor.sh"
+
+- name: Link docker-compose
+  file:
+    src: /usr/local/bin/docker-compose
+    dest: /usr/bin/docker-compose
+    group: docker
+    state: link
+
+- name: apply sysctl
+  shell: "sysctl -p"
+  ignore_errors: true
+
+- name: apply ecs_mq
+  shell: "sh /root/ecs_mq/install.sh"
+  ignore_errors: true
+
+- name: apply multi-queue-hw
+  shell: "systemctl enable multi-queue-hw && service multi-queue-hw start"
+  ignore_errors: true

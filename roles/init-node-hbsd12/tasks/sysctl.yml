@@ -1,0 +1,7 @@
+- name: create sysctl config
+  copy:
+    src: "sysctl.conf"
+    dest: "/etc/sysctl.conf"
+  notify:
+    - apply sysctl
+  ignore_errors: yes

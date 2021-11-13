@@ -1,0 +1,3 @@
+- name: disable rpcbind
+  service: name=rpcbind enabled=no state=stopped
+  ignore_errors: yes

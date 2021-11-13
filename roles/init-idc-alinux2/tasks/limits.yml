@@ -1,0 +1,4 @@
+- name: create limits config
+  copy:
+    src: "limits.conf"
+    dest: "/etc/security/limits.conf"

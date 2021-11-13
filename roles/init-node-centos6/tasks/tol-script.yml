@@ -1,0 +1,7 @@
+- name: Copy scripts to ops dir
+  copy:
+    src: "{{ item }}"
+    dest: "{{ script_base_dir }}"
+    mode: 0755
+  with_fileglob:
+    - "*.sh"

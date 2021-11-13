@@ -1,0 +1,7 @@
+- name: install qemu for kubevirt
+  yum: name={{item}} state=installed
+  with_items:
+    - qemu-kvm
+    - libvirt
+    - virt-install
+    - bridge-utils

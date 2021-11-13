@@ -1,0 +1,38 @@
+- name: delete old tools
+  dnf: name={{item}} state=absent
+  with_items:
+    - kernel-tools
+    - kernel-tools-libs
+  when: kernel_version == "mainline" or kernel_version == "longterm"
+
+- name: install mainline linux kernel
+  dnf: name={{item}} state=present
+  with_items:
+    - kernel-ml
+    - kernel-ml-headers
+    - kernel-ml-devel
+    - kernel-ml-tools
+  when: kernel_version == "mainline"
+
+- name: install longterm linux kernel
+  dnf: name={{item}} state=latest
+  with_items:
+    - kernel-lt
+    - kernel-lt-headers
+    - kernel-lt-devel
+    - kernel-lt-tools
+  when: kernel_version == "longterm"
+
+- name: create blacklist for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modprobe.d/"
+  with_fileglob:
+    - "modprobe.d/*.conf"
+
+- name: create load list for kernel modules
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/modules-load.d/"
+  with_fileglob:
+    - "modules-load.d/*.conf"

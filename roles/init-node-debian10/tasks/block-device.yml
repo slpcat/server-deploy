@@ -1,0 +1,4 @@
+- name: create block device rules
+  copy:
+    src: "20-block.rules"
+    dest: "/etc/udev/rules.d/20-block.rules"
